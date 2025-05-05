@@ -25,6 +25,30 @@
       padding: 20px;
     }
 
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
+      margin-top: 15px;
+      margin-bottom: 30px;
+    }
+
+    .team-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid #fff;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .team-card span {
+      display: block;
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
     ul {
       list-style: none;
       padding: 0;
@@ -60,6 +84,43 @@
       padding: 8px;
       border-radius: 8px;
     }
+
+    .link {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .link a {
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none;
+    }
+    
+    .teams-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.team-card {
+  flex: 0 1 140px;
+  background-color: #333;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.team-rejunte { background-color: #2e8b57; }     /* verde */
+.team-amarillo { background-color: #fefcdd; color: #222; } /* blanco/amarillo */
+.team-negro { background-color: #000; color: #ffd700; }    /* negro con amarillo */
+.team-curva { background-color: #87ceeb; color: #000; }    /* celeste */
+.team-panteras { background-color: orange; color: #000; }  /* naranja */
+.team-padova { background: linear-gradient(135deg, #ff0000 50%, #000 50%); color: #fff; }
+
   </style>
 </head>
 <body>
@@ -67,25 +128,25 @@
     <h1>🏆 Torneo Padova Adultos 2025</h1>
 
     <h2>📋 Equipos</h2>
-    <ul>
-      <li>El Rejunte FC</li>
-      <li>Inter Amarillo</li>
-      <li>Inter Negro</li>
-      <li>La Curva</li>
-      <li>Panteras FC</li>
-      <li>Padova FC</li>
-    </ul>
+<div class="teams-grid">
+  <div class="team-card team-rejunte">El Rejunte FC</div>
+  <div class="team-card team-amarillo">Inter Amarillo</div>
+  <div class="team-card team-negro">Inter Negro</div>
+  <div class="team-card team-curva">La Curva</div>
+  <div class="team-card team-panteras">Panteras FC</div>
+  <div class="team-card team-padova">Padova FC</div>
+</div>
 
-    <h2>📅 Fixture</h2>
-    <h3>1ERA FECHA – SÁBADO 26/04</h3>
-    <div class="match">Inter Amarillo (2) - (8) Inter Negro</div>
-    <div class="match">Panteras FC (6) - (2) El Rejunte FC</div>
-    <div class="match">Padova FC (5) - (2) La Curva</div>
 
+    <h2>📅 Próxima Fecha</h2>
     <h3>2DA FECHA – SÁBADO 10/05</h3>
     <div class="match">El Rejunte FC vs Inter Amarillo – 15:00h</div>
     <div class="match">La Curva vs Inter Negro – 16:00h</div>
     <div class="match">Panteras FC vs Padova FC – 17:00h</div>
+
+    <div class="link">
+      <a href="fechas-anteriores.html">🔙 Ver fechas anteriores</a>
+    </div>
 
     <h2>📊 Tabla de Posiciones</h2>
     <table>
@@ -111,6 +172,14 @@
         <tr><td>La Curva</td><td>1</td><td>0</td><td>0</td><td>1</td><td>2</td><td>5</td><td>−3</td><td>0</td></tr>
       </tbody>
     </table>
+
+    <h3>🔥 Resultados destacados de la fecha 1</h3>
+    <ul>
+      <li>⚡ Inter Negro goleó 8–2 a Inter Amarillo en la fecha 1</li>
+      <li>⚠️ La Curva jugó con sólo 1 suplente</li>
+      <li>💥 Padova FC ganó su partido con un golazo que cruzó toda la cancha de Emi <i><b>el dibu</b></i> Martinez</li>
+    </ul>
+
   </div>
 </body>
 </html>
