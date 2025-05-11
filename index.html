@@ -26,36 +26,48 @@
     }
 
     .teams-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 12px;
-      margin-top: 15px;
-      margin-bottom: 30px;
+      margin-top: 10px;
     }
 
     .team-card {
-      background-color: rgba(255, 255, 255, 0.1);
-      border: 1px solid #fff;
-      border-radius: 8px;
+      flex: 0 1 140px;
+      background-color: #333;
+      color: #fff;
       padding: 12px;
+      border-radius: 10px;
       text-align: center;
-      font-size: 18px;
       font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
 
-    .team-card span {
-      display: block;
-      font-size: 32px;
-      margin-bottom: 8px;
+    .team-rejunte { background-color: #2e8b57; }
+    .team-amarillo { background-color: #fefcdd; color: #222; }
+    .team-negro { background-color: #000; color: #ffd700; }
+    .team-curva { background-color: #87ceeb; color: #000; }
+    .team-panteras { background-color: orange; color: #000; }
+    .team-padova { background: linear-gradient(135deg, #ff0000 50%, #000 50%); color: #fff; }
+
+    .match {
+      background-color: #3b7d5b;
+      margin: 8px 0;
+      padding: 8px;
+      border-radius: 8px;
+      text-align: center;
     }
 
-    ul {
-      list-style: none;
-      padding: 0;
+    .link {
+      text-align: center;
+      margin-top: 20px;
     }
 
-    li {
-      padding: 5px 0;
+    .link a {
+      color: #fff;
+      font-weight: bold;
+      text-decoration: none;
     }
 
     table {
@@ -77,50 +89,6 @@
     tr:nth-child(even) {
       background-color: rgba(255, 255, 255, 0.1);
     }
-
-    .match {
-      background-color: #3b7d5b;
-      margin: 8px 0;
-      padding: 8px;
-      border-radius: 8px;
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .link a {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    
-    .teams-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-.team-card {
-  flex: 0 1 140px;
-  background-color: #333;
-  color: #fff;
-  padding: 12px;
-  border-radius: 10px;
-  text-align: center;
-  font-weight: bold;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-}
-.team-rejunte { background-color: #2e8b57; }     /* verde */
-.team-amarillo { background-color: #fefcdd; color: #222; } /* blanco/amarillo */
-.team-negro { background-color: #000; color: #ffd700; }    /* negro con amarillo */
-.team-curva { background-color: #87ceeb; color: #000; }    /* celeste */
-.team-panteras { background-color: orange; color: #000; }  /* naranja */
-.team-padova { background: linear-gradient(135deg, #ff0000 50%, #000 50%); color: #fff; }
-
   </style>
 </head>
 <body>
@@ -128,28 +96,22 @@
     <h1>🏆 Torneo Padova Adultos 2025</h1>
 
     <h2>📋 Equipos</h2>
-<div class="teams-grid">
-  <div class="team-card team-rejunte">El Rejunte FC</div>
-  <div class="team-card team-amarillo">Inter Amarillo</div>
-  <div class="team-card team-negro">Inter Negro</div>
-  <div class="team-card team-curva">La Curva</div>
-  <div class="team-card team-panteras">Panteras FC</div>
-  <div class="team-card team-padova">Padova FC</div>
-</div>
-
-
-    <h2>📅 Próxima Fecha</h2>
-    <h3>2DA FECHA – SÁBADO 10/05</h3>
-    <div class="match">El Rejunte FC vs Inter Amarillo – 15:00h</div>
-    <div class="match">La Curva vs Inter Negro – 16:00h</div>
-    <div class="match">Panteras FC vs Padova FC – 17:00h</div>
-
-    <div class="link">
-      <a href="fechas-anteriores.html">🔙 Ver fechas anteriores</a>
+    <div class="teams-grid">
+      <div class="team-card team-rejunte">El Rejunte FC</div>
+      <div class="team-card team-amarillo">Inter Amarillo</div>
+      <div class="team-card team-negro">Inter Negro</div>
+      <div class="team-card team-curva">La Curva</div>
+      <div class="team-card team-panteras">Panteras FC</div>
+      <div class="team-card team-padova">Padova FC</div>
     </div>
+    
+    <h2>📅 2DA FECHA – SÁBADO 10/05</h2>
+    <div class="match">El Rejunte FC <b>vs</b> Inter Amarillo</div>
+    <div class="match">La Curva <b>vs</b> Inter Negro</div>
+    <div class="match">Padova FC <b>vs</b> Panteras FC</div>
 
     <h2>📊 Tabla de Posiciones</h2>
-    <table>
+    <table id="tabla">
       <thead>
         <tr>
           <th>Equipo</th>
@@ -163,23 +125,92 @@
           <th>Pts</th>
         </tr>
       </thead>
-      <tbody>
-        <tr><td>Inter Negro</td><td>1</td><td>1</td><td>0</td><td>0</td><td>8</td><td>2</td><td>+6</td><td>3</td></tr>
-        <tr><td>Panteras FC</td><td>1</td><td>1</td><td>0</td><td>0</td><td>6</td><td>2</td><td>+4</td><td>3</td></tr>
-        <tr><td>Padova FC</td><td>1</td><td>1</td><td>0</td><td>0</td><td>5</td><td>2</td><td>+3</td><td>3</td></tr>
-        <tr><td>Inter Amarillo</td><td>1</td><td>0</td><td>0</td><td>1</td><td>2</td><td>8</td><td>−6</td><td>0</td></tr>
-        <tr><td>El Rejunte FC</td><td>1</td><td>0</td><td>0</td><td>1</td><td>2</td><td>6</td><td>−4</td><td>0</td></tr>
-        <tr><td>La Curva</td><td>1</td><td>0</td><td>0</td><td>1</td><td>2</td><td>5</td><td>−3</td><td>0</td></tr>
-      </tbody>
+      <tbody id="tabla-body"></tbody>
     </table>
 
-    <h3>🔥 Resultados destacados de la fecha 1</h3>
+    <h3>🔥 Resultados destacados de la fecha 2 🔥</h3>
     <ul>
-      <li>⚡ Inter Negro goleó 8–2 a Inter Amarillo en la fecha 1</li>
-      <li>⚠️ La Curva jugó con sólo 1 suplente</li>
-      <li>💥 Padova FC ganó su partido con un golazo que cruzó toda la cancha de Emi <i><b>el dibu</b></i> Martinez</li>
+      <li>🧤 El arquero Pablo Crivelli (Padova FC) atajó un penal clave</li>
+      <li>⚠️ El desempeño del árbitro fue muy cuestionable</li>
     </ul>
 
+    
+
+    <div class="link">
+      <a href="fechas-anteriores.html">🔙 Ver fechas anteriores</a>
+    </div>
   </div>
+
+  <script>
+    const resultados = [
+      { equipoA: "Inter Amarillo", golesA: 2, equipoB: "Inter Negro", golesB: 8 },
+      { equipoA: "Panteras FC", golesA: 6, equipoB: "El Rejunte FC", golesB: 2 },
+      { equipoA: "Padova FC", golesA: 5, equipoB: "La Curva", golesB: 2 },
+      { equipoA: "El Rejunte FC", golesA: 3, equipoB: "Inter Amarillo", golesB: 8 },
+      { equipoA: "La Curva", golesA: 2, equipoB: "Inter Negro", golesB: 9 },
+      { equipoA: "Padova FC", golesA: 2, equipoB: "Panteras FC", golesB: 4 },
+    ];
+
+    const equipos = [
+      "Inter Negro",
+      "Panteras FC",
+      "Padova FC",
+      "Inter Amarillo",
+      "El Rejunte FC",
+      "La Curva"
+    ];
+
+    const tabla = {};
+    equipos.forEach(equipo => {
+      tabla[equipo] = { PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GC: 0, DG: 0, Pts: 0 };
+    });
+
+    resultados.forEach(({ equipoA, golesA, equipoB, golesB }) => {
+      tabla[equipoA].PJ++;
+      tabla[equipoB].PJ++;
+      tabla[equipoA].GF += golesA;
+      tabla[equipoA].GC += golesB;
+      tabla[equipoB].GF += golesB;
+      tabla[equipoB].GC += golesA;
+
+      if (golesA > golesB) {
+        tabla[equipoA].PG++;
+        tabla[equipoB].PP++;
+        tabla[equipoA].Pts += 3;
+      } else if (golesA < golesB) {
+        tabla[equipoB].PG++;
+        tabla[equipoA].PP++;
+        tabla[equipoB].Pts += 3;
+      } else {
+        tabla[equipoA].PE++;
+        tabla[equipoB].PE++;
+        tabla[equipoA].Pts += 1;
+        tabla[equipoB].Pts += 1;
+      }
+
+      tabla[equipoA].DG = tabla[equipoA].GF - tabla[equipoA].GC;
+      tabla[equipoB].DG = tabla[equipoB].GF - tabla[equipoB].GC;
+    });
+
+    const orden = Object.entries(tabla)
+      .sort((a, b) => b[1].Pts - a[1].Pts || b[1].DG - a[1].DG || b[1].GF - a[1].GF);
+
+    const tbody = document.getElementById("tabla-body");
+    orden.forEach(([nombre, stats]) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${nombre}</td>
+        <td>${stats.PJ}</td>
+        <td>${stats.PG}</td>
+        <td>${stats.PE}</td>
+        <td>${stats.PP}</td>
+        <td>${stats.GF}</td>
+        <td>${stats.GC}</td>
+        <td>${stats.DG >= 0 ? '+' + stats.DG : stats.DG}</td>
+        <td>${stats.Pts}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  </script>
 </body>
 </html>
