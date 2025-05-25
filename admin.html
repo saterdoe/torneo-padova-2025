@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Tournament Data</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+  <div class="container" id="admin-container">
+    <h1>Admin - Tournament Data Management</h1>
+    <div id="login-section">
+      <p>Please enter the password to access the admin panel.</p>
+    </div>
+    <div id="content-section" class="hidden">
+      <h2>Add New Match Result</h2>
+      <form id="add-match-form">
+        <label for="teamA-name">Team A Name:</label>
+        <input type="text" id="teamA-name" name="teamA-name" required>
+        
+        <label for="teamA-score">Team A Score:</label>
+        <input type="number" id="teamA-score" name="teamA-score" required min="0">
+        
+        <label for="teamB-name">Team B Name:</label>
+        <input type="text" id="teamB-name" name="teamB-name" required>
+        
+        <label for="teamB-score">Team B Score:</label>
+        <input type="number" id="teamB-score" name="teamB-score" required min="0">
+        
+        <button type="submit">Add Match and Generate JSON</button>
+      </form>
+      
+      <h2>Generated JSON Output:</h2>
+      <textarea id="json-output" readonly></textarea>
+      
+      <div class="instructions">
+        <h3>Instructions to Update Tournament Data:</h3>
+        <p>1. Copy all the text from the box above.</p>
+        <p>2. Open the <code>results.json</code> file in your project.</p>
+        <p>3. Replace the entire content of <code>results.json</code> with the copied text.</p>
+        <p>4. Save the <code>results.json</code> file.</p>
+        <p>5. Commit and push the changes to your GitHub repository to update the live site.</p>
+        <p><strong>Important:</strong> Ensure that team names entered match exactly with those in <code>results.json</code>. If a team is new, you must first add it to the "teams" array within <code>results.json</code> manually or ensure your admin setup handles new team additions (currently, this form assumes existing teams).</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginSection = document.getElementById('login-section');
+      const contentSection = document.getElementById('content-section');
+      const addMatchForm = document.getElementById('add-match-form');
+      const jsonOutput = document.getElementById('json-output');
+
+      const password = prompt('Enter password:');
+      
+      if (password === 'PADEL2025') {
+        loginSection.classList.add('hidden');
+        contentSection.classList.remove('hidden');
+        loadTeamDropdowns(); // Attempt to load teams for dropdowns
+      } else {
+        loginSection.innerHTML = '<p style="color: red; text-align: center; font-weight: bold;">Access Denied. Incorrect password.</p>';
+      }
+
+      async function loadTeamDropdowns() {
+        try {
+          const response = await fetch('../results.json');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          const teams = data.teams;
+
+          if (teams && teams.length > 0) {
+            const teamANameInput = document.getElementById('teamA-name');
+            const teamBNameInput = document.getElementById('teamB-name');
+
+            const teamASelect = document.createElement('select');
+            teamASelect.id = 'teamA-name-select';
+            teamASelect.name = 'teamA-name';
+            teams.forEach(team => {
+              const option = document.createElement('option');
+              option.value = team;
+              option.textContent = team;
+              teamASelect.appendChild(option);
+            });
+            teamANameInput.parentNode.replaceChild(teamASelect, teamANameInput);
+            
+            const teamBSelect = document.createElement('select');
+            teamBSelect.id = 'teamB-name-select';
+            teamBSelect.name = 'teamB-name';
+            teams.forEach(team => {
+              const option = document.createElement('option');
+              option.value = team;
+              option.textContent = team;
+              teamBSelect.appendChild(option);
+            });
+            teamBNameInput.parentNode.replaceChild(teamBSelect, teamBNameInput);
+          } else {
+            console.warn('No teams found in results.json or teams array is empty. Sticking to text inputs.');
+          }
+        } catch (error) {
+          console.error('Failed to load teams for dropdowns:', error);
+          alert('Could not load existing teams for dropdowns. Please ensure results.json is accessible and correct. You can still use text inputs, but ensure names match existing teams.');
+        }
+      }
+
+      addMatchForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const teamANameElement = document.getElementById('teamA-name-select') || document.getElementById('teamA-name');
+        const teamBNameElement = document.getElementById('teamB-name-select') || document.getElementById('teamB-name');
+
+        const teamAName = teamANameElement.value.trim();
+        const teamAScore = parseInt(document.getElementById('teamA-score').value, 10);
+        const teamBName = teamBNameElement.value.trim();
+        const teamBScore = parseInt(document.getElementById('teamB-score').value, 10);
+
+        if (!teamAName || !teamBName || isNaN(teamAScore) || isNaN(teamBScore)) {
+          alert('Please fill in all fields correctly.');
+          return;
+        }
+
+        if (teamAName === teamBName) {
+          alert('Team A and Team B cannot be the same.');
+          return;
+        }
+
+        try {
+          const response = await fetch('../results.json?cachebust=' + new Date().getTime()); // Cache bust
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          
+          const existingTeams = data.teams || [];
+          const existingResults = data.results || [];
+          
+          // Basic check if teams exist (if using text inputs and not adding new teams)
+          if (!existingTeams.includes(teamAName) || !existingTeams.includes(teamBName)) {
+             // This check is more relevant if we were using text inputs and NOT populating dropdowns.
+             // With dropdowns, the teams should inherently exist.
+             // However, we could add a feature to add new teams here if desired.
+             // For now, if dropdowns failed and user typed, this is a fallback.
+            const confirmAddTeams = confirm("One or both teams are not in the current list of teams. For now, we'll assume they are valid and proceed. Advanced functionality would add them to the teams list. Continue?");
+            if (!confirmAddTeams) {
+                // Optionally, add new teams to existingTeams array here if that's desired behavior
+                // e.g., if (!existingTeams.includes(teamAName)) existingTeams.push(teamAName);
+                // if (!existingTeams.includes(teamBName)) existingTeams.push(teamBName);
+                // For this version, we will not add new teams automatically to keep it simple.
+                // The instructions already mention how to handle new teams.
+                // alert("Error: One or both teams do not exist in the current 'teams' list in results.json. Please add them manually or correct the input.");
+                // return;
+            }
+          }
+
+          const newMatch = {
+            equipoA: teamAName,
+            golesA: teamAScore,
+            equipoB: teamBName,
+            golesB: teamBScore
+          };
+          
+          const updatedResults = [...existingResults, newMatch];
+          
+          const newJsonData = {
+            teams: existingTeams, // Keep original teams list, manual update for new teams as per instructions
+            results: updatedResults
+          };
+          
+          jsonOutput.value = JSON.stringify(newJsonData, null, 2);
+          
+        } catch (error) {
+          console.error('Error processing match data:', error);
+          alert('Failed to process match data. Ensure results.json is accessible and correctly formatted. Error: ' + error.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

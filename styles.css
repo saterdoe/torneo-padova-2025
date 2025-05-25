@@ -1,0 +1,163 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to bottom, #1f4037, #99f2c8);
+  color: #fff;
+  margin: 0;
+  padding: 20px;
+}
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+.container {
+  max-width: 900px;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.teams-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.team-card {
+  flex: 0 1 140px;
+  background-color: #333;
+  color: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  text-align: center;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+.team-rejunte { background-color: #2e8b57; }
+.team-amarillo { background-color: #fefcdd; color: #222; }
+.team-negro { background-color: #000; color: #ffd700; }
+.team-curva { background-color: #87ceeb; color: #000; }
+.team-panteras { background-color: orange; color: #000; }
+.team-padova { background: linear-gradient(135deg, #ff0000 50%, #000 50%); color: #fff; }
+
+.match {
+  background-color: #3b7d5b;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.link a {
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  border: 1px solid #fff;
+  text-align: center;
+}
+
+th {
+  background-color: #2e8b57;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Admin page specific styles */
+.admin-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Override general .container for admin page for its specific needs */
+.admin-page .container {
+  width: 100%; /* Takes full width of its parent, which is admin-page body */
+  background: rgba(0, 0, 0, 0.6); /* Slightly darker than default */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Add shadow */
+  /* max-width and margin:auto will be inherited from .container if not overridden */
+}
+
+/* Form elements specific to admin page */
+.admin-page label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.admin-page input[type="text"],
+.admin-page input[type="number"],
+.admin-page select {
+  width: calc(100% - 22px);
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+}
+
+.admin-page button {
+  background-color: #2e8b57;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  display: block;
+  width: 100%;
+}
+
+.admin-page button:hover {
+  background-color: #1f6f4a;
+}
+
+.admin-page textarea {
+  width: calc(100% - 22px);
+  height: 200px;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+/* Instructions box specific to admin page */
+.admin-page .instructions {
+  margin-top: 20px;
+  background-color: rgba(255,255,255,0.1);
+  padding: 15px;
+  border-radius: 8px;
+}
+
+.admin-page .instructions p {
+  margin: 5px 0;
+}
+
+/* Utility class used in admin page */
+.admin-page .hidden {
+  display: none;
+}

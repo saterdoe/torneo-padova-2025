@@ -4,92 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Torneo Padova 2025</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to bottom, #1f4037, #99f2c8);
-      color: #fff;
-      margin: 0;
-      padding: 20px;
-    }
-
-    h1, h2, h3 {
-      text-align: center;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: auto;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 12px;
-      padding: 20px;
-    }
-
-    .teams-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
-    .team-card {
-      flex: 0 1 140px;
-      background-color: #333;
-      color: #fff;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      font-weight: bold;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
-    }
-
-    .team-rejunte { background-color: #2e8b57; }
-    .team-amarillo { background-color: #fefcdd; color: #222; }
-    .team-negro { background-color: #000; color: #ffd700; }
-    .team-curva { background-color: #87ceeb; color: #000; }
-    .team-panteras { background-color: orange; color: #000; }
-    .team-padova { background: linear-gradient(135deg, #ff0000 50%, #000 50%); color: #fff; }
-
-    .match {
-      background-color: #3b7d5b;
-      margin: 8px 0;
-      padding: 8px;
-      border-radius: 8px;
-      text-align: center;
-    }
-
-    .link {
-      text-align: center;
-      margin-top: 20px;
-    }
-
-    .link a {
-      color: #fff;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-
-    th, td {
-      padding: 10px;
-      border: 1px solid #fff;
-      text-align: center;
-    }
-
-    th {
-      background-color: #2e8b57;
-    }
-
-    tr:nth-child(even) {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <div class="container">
@@ -137,78 +52,65 @@
   </div>
 
   <script>
-    const resultados = [
-      { equipoA: "Inter Amarillo", golesA: 2, equipoB: "Inter Negro", golesB: 8 },
-      { equipoA: "Panteras FC", golesA: 6, equipoB: "El Rejunte FC", golesB: 2 },
-      { equipoA: "Padova FC", golesA: 5, equipoB: "La Curva", golesB: 2 },
-      { equipoA: "El Rejunte FC", golesA: 3, equipoB: "Inter Amarillo", golesB: 8 },
-      { equipoA: "La Curva", golesA: 2, equipoB: "Inter Negro", golesB: 9 },
-      { equipoA: "Padova FC", golesA: 2, equipoB: "Panteras FC", golesB: 4 },
-      { equipoA: "Inter Negro", golesA: 4, equipoB: "Panteras FC", golesB: 5 },
-      { equipoA: "Inter Amarillo", golesA: 4, equipoB: "La Curva", golesB: 2 },
-      { equipoA: "El Rejunte FC", golesA: 4, equipoB: "Padova FC", golesB: 3 } 
-    ];
+    fetch('results.json')
+      .then(response => response.json())
+      .then(data => {
+        const equipos = data.teams;
+        const resultados = data.results;
+        const tabla = {};
 
-    const equipos = [
-      "Inter Negro",
-      "Panteras FC",
-      "Padova FC",
-      "Inter Amarillo",
-      "El Rejunte FC",
-      "La Curva"
-    ];
+        equipos.forEach(equipo => {
+          tabla[equipo] = { PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GC: 0, DG: 0, Pts: 0 };
+        });
 
-    const tabla = {};
-    equipos.forEach(equipo => {
-      tabla[equipo] = { PJ: 0, PG: 0, PE: 0, PP: 0, GF: 0, GC: 0, DG: 0, Pts: 0 };
-    });
+        resultados.forEach(({ equipoA, golesA, equipoB, golesB }) => {
+          tabla[equipoA].PJ++;
+          tabla[equipoB].PJ++;
+          tabla[equipoA].GF += golesA;
+          tabla[equipoA].GC += golesB;
+          tabla[equipoB].GF += golesB;
+          tabla[equipoB].GC += golesA;
 
-    resultados.forEach(({ equipoA, golesA, equipoB, golesB }) => {
-      tabla[equipoA].PJ++;
-      tabla[equipoB].PJ++;
-      tabla[equipoA].GF += golesA;
-      tabla[equipoA].GC += golesB;
-      tabla[equipoB].GF += golesB;
-      tabla[equipoB].GC += golesA;
+          if (golesA > golesB) {
+            tabla[equipoA].PG++;
+            tabla[equipoB].PP++;
+            tabla[equipoA].Pts += 3;
+          } else if (golesA < golesB) {
+            tabla[equipoB].PG++;
+            tabla[equipoA].PP++;
+            tabla[equipoB].Pts += 3;
+          } else {
+            tabla[equipoA].PE++;
+            tabla[equipoB].PE++;
+            tabla[equipoA].Pts += 1;
+            tabla[equipoB].Pts += 1;
+          }
 
-      if (golesA > golesB) {
-        tabla[equipoA].PG++;
-        tabla[equipoB].PP++;
-        tabla[equipoA].Pts += 3;
-      } else if (golesA < golesB) {
-        tabla[equipoB].PG++;
-        tabla[equipoA].PP++;
-        tabla[equipoB].Pts += 3;
-      } else {
-        tabla[equipoA].PE++;
-        tabla[equipoB].PE++;
-        tabla[equipoA].Pts += 1;
-        tabla[equipoB].Pts += 1;
-      }
+          tabla[equipoA].DG = tabla[equipoA].GF - tabla[equipoA].GC;
+          tabla[equipoB].DG = tabla[equipoB].GF - tabla[equipoB].GC;
+        });
 
-      tabla[equipoA].DG = tabla[equipoA].GF - tabla[equipoA].GC;
-      tabla[equipoB].DG = tabla[equipoB].GF - tabla[equipoB].GC;
-    });
+        const orden = Object.entries(tabla)
+          .sort((a, b) => b[1].Pts - a[1].Pts || b[1].DG - a[1].DG || b[1].GF - a[1].GF);
 
-    const orden = Object.entries(tabla)
-      .sort((a, b) => b[1].Pts - a[1].Pts || b[1].DG - a[1].DG || b[1].GF - a[1].GF);
-
-    const tbody = document.getElementById("tabla-body");
-    orden.forEach(([nombre, stats]) => {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${nombre}</td>
-        <td>${stats.PJ}</td>
-        <td>${stats.PG}</td>
-        <td>${stats.PE}</td>
-        <td>${stats.PP}</td>
-        <td>${stats.GF}</td>
-        <td>${stats.GC}</td>
-        <td>${stats.DG >= 0 ? '+' + stats.DG : stats.DG}</td>
-        <td>${stats.Pts}</td>
-      `;
-      tbody.appendChild(row);
-    });
+        const tbody = document.getElementById("tabla-body");
+        orden.forEach(([nombre, stats]) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${nombre}</td>
+            <td>${stats.PJ}</td>
+            <td>${stats.PG}</td>
+            <td>${stats.PE}</td>
+            <td>${stats.PP}</td>
+            <td>${stats.GF}</td>
+            <td>${stats.GC}</td>
+            <td>${stats.DG >= 0 ? '+' + stats.DG : stats.DG}</td>
+            <td>${stats.Pts}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error fetching results:', error));
   </script>
 </body>
 </html>
